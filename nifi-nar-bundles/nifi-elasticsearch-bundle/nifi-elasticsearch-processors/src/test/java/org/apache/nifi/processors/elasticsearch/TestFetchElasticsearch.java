@@ -16,6 +16,7 @@
  */
 package org.apache.nifi.processors.elasticsearch;
 
+import org.apache.nifi.elasticsearch.common.CommonPropertyDescriptors;
 import org.apache.nifi.util.MockFlowFile;
 import org.apache.nifi.util.TestRunner;
 import org.apache.nifi.util.TestRunners;
@@ -68,10 +69,10 @@ public class TestFetchElasticsearch {
     public void testFetchElasticsearchOnTrigger() throws IOException {
         runner = TestRunners.newTestRunner(new FetchElasticsearchTestProcessor( true)); // all docs are found
         runner.setValidateExpressionUsage(true);
-        runner.setProperty(AbstractElasticsearchProcessor.CLUSTER_NAME, "elasticsearch_brew");
-        runner.setProperty(AbstractElasticsearchProcessor.HOSTS, "127.0.0.1:9300");
-        runner.setProperty(AbstractElasticsearchProcessor.PING_TIMEOUT, "5s");
-        runner.setProperty(AbstractElasticsearchProcessor.SAMPLER_INTERVAL, "5s");
+        runner.setProperty(CommonPropertyDescriptors.CLUSTER_NAME, "elasticsearch_brew");
+        runner.setProperty(CommonPropertyDescriptors.HOSTS, "127.0.0.1:9300");
+        runner.setProperty(CommonPropertyDescriptors.PING_TIMEOUT, "5s");
+        runner.setProperty(CommonPropertyDescriptors.SAMPLER_INTERVAL, "5s");
 
         runner.setProperty(FetchElasticsearch.INDEX, "doc");
         runner.assertNotValid();
@@ -94,10 +95,10 @@ public class TestFetchElasticsearch {
     @Test
     public void testFetchElasticsearchOnTriggerWithFailures() throws IOException {
         runner = TestRunners.newTestRunner(new FetchElasticsearchTestProcessor( false)); // simulate doc not found
-        runner.setProperty(AbstractElasticsearchProcessor.CLUSTER_NAME, "elasticsearch_brew");
-        runner.setProperty(AbstractElasticsearchProcessor.HOSTS, "127.0.0.1:9300");
-        runner.setProperty(AbstractElasticsearchProcessor.PING_TIMEOUT, "5s");
-        runner.setProperty(AbstractElasticsearchProcessor.SAMPLER_INTERVAL, "5s");
+        runner.setProperty(CommonPropertyDescriptors.CLUSTER_NAME, "elasticsearch_brew");
+        runner.setProperty(CommonPropertyDescriptors.HOSTS, "127.0.0.1:9300");
+        runner.setProperty(CommonPropertyDescriptors.PING_TIMEOUT, "5s");
+        runner.setProperty(CommonPropertyDescriptors.SAMPLER_INTERVAL, "5s");
         runner.setProperty(FetchElasticsearch.INDEX, "doc");
         runner.setProperty(FetchElasticsearch.TYPE, "status");
         runner.setValidateExpressionUsage(true);
@@ -204,10 +205,10 @@ public class TestFetchElasticsearch {
         runner.setValidateExpressionUsage(true);
 
         //Local Cluster - Mac pulled from brew
-        runner.setProperty(AbstractElasticsearchProcessor.CLUSTER_NAME, "elasticsearch_brew");
-        runner.setProperty(AbstractElasticsearchProcessor.HOSTS, "127.0.0.1:9300");
-        runner.setProperty(AbstractElasticsearchProcessor.PING_TIMEOUT, "5s");
-        runner.setProperty(AbstractElasticsearchProcessor.SAMPLER_INTERVAL, "5s");
+        runner.setProperty(CommonPropertyDescriptors.CLUSTER_NAME, "elasticsearch_brew");
+        runner.setProperty(CommonPropertyDescriptors.HOSTS, "127.0.0.1:9300");
+        runner.setProperty(CommonPropertyDescriptors.PING_TIMEOUT, "5s");
+        runner.setProperty(CommonPropertyDescriptors.SAMPLER_INTERVAL, "5s");
 
         runner.setProperty(FetchElasticsearch.INDEX, "doc");
 
@@ -237,10 +238,10 @@ public class TestFetchElasticsearch {
         runner.setValidateExpressionUsage(true);
 
         //Local Cluster - Mac pulled from brew
-        runner.setProperty(AbstractElasticsearchProcessor.CLUSTER_NAME, "elasticsearch_brew");
-        runner.setProperty(AbstractElasticsearchProcessor.HOSTS, "127.0.0.1:9300");
-        runner.setProperty(AbstractElasticsearchProcessor.PING_TIMEOUT, "5s");
-        runner.setProperty(AbstractElasticsearchProcessor.SAMPLER_INTERVAL, "5s");
+        runner.setProperty(CommonPropertyDescriptors.CLUSTER_NAME, "elasticsearch_brew");
+        runner.setProperty(CommonPropertyDescriptors.HOSTS, "127.0.0.1:9300");
+        runner.setProperty(CommonPropertyDescriptors.PING_TIMEOUT, "5s");
+        runner.setProperty(CommonPropertyDescriptors.SAMPLER_INTERVAL, "5s");
         runner.setProperty(FetchElasticsearch.INDEX, "doc");
 
         runner.setProperty(FetchElasticsearch.TYPE, "status");

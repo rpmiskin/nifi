@@ -19,23 +19,51 @@ language governing permissions and limitations under the License. -->
         <version>0.4.2-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.apache.nifi</groupId>
-    <artifactId>nifi-elasticsearch-nar</artifactId>
-    <packaging>nar</packaging>
+    <artifactId>nifi-elasticsearch-common</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <slf4jversion>1.7.12</slf4jversion>
+        <es.version>2.1.0</es.version>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.apache.nifi</groupId>
-            <artifactId>nifi-standard-services-api-nar</artifactId>
-            <type>nar</type>
+            <artifactId>nifi-api</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.nifi</groupId>
-            <artifactId>nifi-elasticsearch-processors</artifactId>
+            <artifactId>nifi-properties</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.nifi</groupId>
-            <artifactId>nifi-elasticsearch-reporting-tasks</artifactId>
+            <artifactId>nifi-processor-utils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.nifi</groupId>
+            <artifactId>nifi-mock</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${es.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.nifi</groupId>
+            <artifactId>nifi-ssl-context-service-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
         </dependency>
     </dependencies>
 

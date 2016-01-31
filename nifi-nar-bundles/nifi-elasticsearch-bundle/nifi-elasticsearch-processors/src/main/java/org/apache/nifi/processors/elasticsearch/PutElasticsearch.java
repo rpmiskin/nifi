@@ -22,7 +22,7 @@ import org.apache.nifi.annotation.behavior.InputRequirement;
 import org.apache.nifi.annotation.documentation.CapabilityDescription;
 import org.apache.nifi.annotation.documentation.Tags;
 import org.apache.nifi.components.PropertyDescriptor;
-import org.apache.nifi.expression.AttributeExpression;
+import org.apache.nifi.elasticsearch.common.InsertPropertyDescriptors;
 import org.apache.nifi.flowfile.FlowFile;
 import org.apache.nifi.logging.ProcessorLog;
 import org.apache.nifi.processor.ProcessContext;
@@ -30,7 +30,6 @@ import org.apache.nifi.processor.ProcessSession;
 import org.apache.nifi.processor.Relationship;
 import org.apache.nifi.processor.exception.ProcessException;
 import org.apache.nifi.processor.io.InputStreamCallback;
-import org.apache.nifi.processor.util.StandardValidators;
 import org.elasticsearch.ElasticsearchTimeoutException;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
@@ -66,41 +65,6 @@ public class PutElasticsearch extends AbstractElasticsearchProcessor {
             .description("A FlowFile is routed to this relationship if the database cannot be updated but attempting the operation again may succeed")
             .build();
 
-    public static final PropertyDescriptor ID_ATTRIBUTE = new PropertyDescriptor.Builder()
-            .name("Identifier Attribute")
-            .description("The name of the attribute containing the identifier for each FlowFile")
-            .required(true)
-            .expressionLanguageSupported(false)
-            .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
-            .build();
-
-    public static final PropertyDescriptor INDEX = new PropertyDescriptor.Builder()
-            .name("Index")
-            .description("The name of the index to insert into")
-            .required(true)
-            .expressionLanguageSupported(true)
-            .addValidator(StandardValidators.createAttributeExpressionLanguageValidator(
-                    AttributeExpression.ResultType.STRING, true))
-            .build();
-
-    public static final PropertyDescriptor TYPE = new PropertyDescriptor.Builder()
-            .name("Type")
-            .description("The type of this document (used by Elasticsearch for indexing and searching)")
-            .required(true)
-            .expressionLanguageSupported(true)
-            .addValidator(StandardValidators.createAttributeExpressionLanguageValidator(
-                    AttributeExpression.ResultType.STRING, true))
-            .build();
-
-    public static final PropertyDescriptor BATCH_SIZE = new PropertyDescriptor.Builder()
-            .name("Batch Size")
-            .description("The preferred number of FlowFiles to put to the database in a single transaction")
-            .required(true)
-            .addValidator(StandardValidators.POSITIVE_INTEGER_VALIDATOR)
-            .defaultValue("100")
-            .build();
-
-
     @Override
     public Set<Relationship> getRelationships() {
         final Set<Relationship> relationships = new HashSet<>();
@@ -112,17 +76,7 @@ public class PutElasticsearch extends AbstractElasticsearchProcessor {
 
     @Override
     public final List<PropertyDescriptor> getSupportedPropertyDescriptors() {
-        final List<PropertyDescriptor> descriptors = new ArrayList<>();
-        descriptors.add(CLUSTER_NAME);
-        descriptors.add(HOSTS);
-        descriptors.add(PROP_SSL_CONTEXT_SERVICE);
-        descriptors.add(PROP_SHIELD_LOCATION);
-        descriptors.add(PING_TIMEOUT);
-        descriptors.add(SAMPLER_INTERVAL);
-        descriptors.add(ID_ATTRIBUTE);
-        descriptors.add(INDEX);
-        descriptors.add(TYPE);
-        descriptors.add(BATCH_SIZE);
+        final List<PropertyDescriptor> descriptors = new ArrayList<>(InsertPropertyDescriptors.getProperties());
 
         return Collections.unmodifiableList(descriptors);
     }
@@ -132,10 +86,10 @@ public class PutElasticsearch extends AbstractElasticsearchProcessor {
     public void onTrigger(final ProcessContext context, final ProcessSession session) throws ProcessException {
         // Create the client if one does not already exist
         createElasticsearchClient(context);
-        final int batchSize = context.getProperty(BATCH_SIZE).asInteger();
-        final String index = context.getProperty(INDEX).evaluateAttributeExpressions().getValue();
-        final String id_attribute = context.getProperty(ID_ATTRIBUTE).getValue();
-        final String docType = context.getProperty(TYPE).evaluateAttributeExpressions().getValue();
+        final int batchSize = context.getProperty(InsertPropertyDescriptors.BATCH_SIZE).asInteger();
+        final String index = context.getProperty(InsertPropertyDescriptors.INDEX).evaluateAttributeExpressions().getValue();
+        final String id_attribute = context.getProperty(InsertPropertyDescriptors.ID_ATTRIBUTE).getValue();
+        final String docType = context.getProperty(InsertPropertyDescriptors.TYPE).evaluateAttributeExpressions().getValue();
 
         final List<FlowFile> flowFiles = session.get(batchSize);
         if (flowFiles.isEmpty()) {

@@ -16,6 +16,8 @@
  */
 package org.apache.nifi.processors.elasticsearch;
 
+import org.apache.nifi.elasticsearch.common.CommonPropertyDescriptors;
+import org.apache.nifi.elasticsearch.common.InsertPropertyDescriptors;
 import org.apache.nifi.processor.ProcessContext;
 import org.apache.nifi.processor.exception.ProcessException;
 import org.apache.nifi.util.MockFlowFile;
@@ -70,17 +72,17 @@ public class TestPutElasticsearch {
     public void testPutElasticSearchOnTrigger() throws IOException {
         runner = TestRunners.newTestRunner(new PutElasticsearchTestProcessor(false)); // no failures
         runner.setValidateExpressionUsage(true);
-        runner.setProperty(AbstractElasticsearchProcessor.CLUSTER_NAME, "elasticsearch_brew");
-        runner.setProperty(AbstractElasticsearchProcessor.HOSTS, "127.0.0.1:9300");
-        runner.setProperty(AbstractElasticsearchProcessor.PING_TIMEOUT, "5s");
-        runner.setProperty(AbstractElasticsearchProcessor.SAMPLER_INTERVAL, "5s");
+        runner.setProperty(CommonPropertyDescriptors.CLUSTER_NAME, "elasticsearch_brew");
+        runner.setProperty(CommonPropertyDescriptors.HOSTS, "127.0.0.1:9300");
+        runner.setProperty(CommonPropertyDescriptors.PING_TIMEOUT, "5s");
+        runner.setProperty(CommonPropertyDescriptors.SAMPLER_INTERVAL, "5s");
 
-        runner.setProperty(PutElasticsearch.INDEX, "tweet");
+        runner.setProperty(InsertPropertyDescriptors.INDEX, "tweet");
         runner.assertNotValid();
-        runner.setProperty(PutElasticsearch.TYPE, "status");
-        runner.setProperty(PutElasticsearch.BATCH_SIZE, "1");
+        runner.setProperty(InsertPropertyDescriptors.TYPE, "status");
+        runner.setProperty(InsertPropertyDescriptors.BATCH_SIZE, "1");
         runner.assertNotValid();
-        runner.setProperty(PutElasticsearch.ID_ATTRIBUTE, "tweet_id");
+        runner.setProperty(InsertPropertyDescriptors.ID_ATTRIBUTE, "tweet_id");
         runner.assertValid();
 
         runner.enqueue(twitterExample, new HashMap<String, String>() {{
@@ -98,14 +100,14 @@ public class TestPutElasticsearch {
     public void testPutElasticSearchOnTriggerWithFailures() throws IOException {
         runner = TestRunners.newTestRunner(new PutElasticsearchTestProcessor(true)); // simulate failures
         runner.setValidateExpressionUsage(false);
-        runner.setProperty(AbstractElasticsearchProcessor.CLUSTER_NAME, "elasticsearch_brew");
-        runner.setProperty(AbstractElasticsearchProcessor.HOSTS, "127.0.0.1:9300");
-        runner.setProperty(AbstractElasticsearchProcessor.PING_TIMEOUT, "5s");
-        runner.setProperty(AbstractElasticsearchProcessor.SAMPLER_INTERVAL, "5s");
-        runner.setProperty(PutElasticsearch.INDEX, "tweet");
-        runner.setProperty(PutElasticsearch.TYPE, "status");
-        runner.setProperty(PutElasticsearch.BATCH_SIZE, "1");
-        runner.setProperty(PutElasticsearch.ID_ATTRIBUTE, "tweet_id");
+        runner.setProperty(CommonPropertyDescriptors.CLUSTER_NAME, "elasticsearch_brew");
+        runner.setProperty(CommonPropertyDescriptors.HOSTS, "127.0.0.1:9300");
+        runner.setProperty(CommonPropertyDescriptors.PING_TIMEOUT, "5s");
+        runner.setProperty(CommonPropertyDescriptors.SAMPLER_INTERVAL, "5s");
+        runner.setProperty(InsertPropertyDescriptors.INDEX, "tweet");
+        runner.setProperty(InsertPropertyDescriptors.TYPE, "status");
+        runner.setProperty(InsertPropertyDescriptors.BATCH_SIZE, "1");
+        runner.setProperty(InsertPropertyDescriptors.ID_ATTRIBUTE, "tweet_id");
 
         runner.enqueue(twitterExample, new HashMap<String, String>() {{
             put("tweet_id", "28039652140");
@@ -194,16 +196,16 @@ public class TestPutElasticsearch {
         runner.setValidateExpressionUsage(false);
 
         //Local Cluster - Mac pulled from brew
-        runner.setProperty(AbstractElasticsearchProcessor.CLUSTER_NAME, "elasticsearch_brew");
-        runner.setProperty(AbstractElasticsearchProcessor.HOSTS, "127.0.0.1:9300");
-        runner.setProperty(AbstractElasticsearchProcessor.PING_TIMEOUT, "5s");
-        runner.setProperty(AbstractElasticsearchProcessor.SAMPLER_INTERVAL, "5s");
+        runner.setProperty(CommonPropertyDescriptors.CLUSTER_NAME, "elasticsearch_brew");
+        runner.setProperty(CommonPropertyDescriptors.HOSTS, "127.0.0.1:9300");
+        runner.setProperty(CommonPropertyDescriptors.PING_TIMEOUT, "5s");
+        runner.setProperty(CommonPropertyDescriptors.SAMPLER_INTERVAL, "5s");
 
-        runner.setProperty(PutElasticsearch.INDEX, "tweet");
-        runner.setProperty(PutElasticsearch.BATCH_SIZE, "1");
+        runner.setProperty(InsertPropertyDescriptors.INDEX, "tweet");
+        runner.setProperty(InsertPropertyDescriptors.BATCH_SIZE, "1");
 
-        runner.setProperty(PutElasticsearch.TYPE, "status");
-        runner.setProperty(PutElasticsearch.ID_ATTRIBUTE, "tweet_id");
+        runner.setProperty(InsertPropertyDescriptors.TYPE, "status");
+        runner.setProperty(InsertPropertyDescriptors.ID_ATTRIBUTE, "tweet_id");
         runner.assertValid();
 
         runner.enqueue(twitterExample, new HashMap<String, String>() {{
@@ -228,15 +230,15 @@ public class TestPutElasticsearch {
         runner.setValidateExpressionUsage(false);
 
         //Local Cluster - Mac pulled from brew
-        runner.setProperty(AbstractElasticsearchProcessor.CLUSTER_NAME, "elasticsearch_brew");
-        runner.setProperty(AbstractElasticsearchProcessor.HOSTS, "127.0.0.1:9300");
-        runner.setProperty(AbstractElasticsearchProcessor.PING_TIMEOUT, "5s");
-        runner.setProperty(AbstractElasticsearchProcessor.SAMPLER_INTERVAL, "5s");
-        runner.setProperty(PutElasticsearch.INDEX, "tweet");
-        runner.setProperty(PutElasticsearch.BATCH_SIZE, "100");
+        runner.setProperty(CommonPropertyDescriptors.CLUSTER_NAME, "elasticsearch_brew");
+        runner.setProperty(CommonPropertyDescriptors.HOSTS, "127.0.0.1:9300");
+        runner.setProperty(CommonPropertyDescriptors.PING_TIMEOUT, "5s");
+        runner.setProperty(CommonPropertyDescriptors.SAMPLER_INTERVAL, "5s");
+        runner.setProperty(InsertPropertyDescriptors.INDEX, "tweet");
+        runner.setProperty(InsertPropertyDescriptors.BATCH_SIZE, "100");
 
-        runner.setProperty(PutElasticsearch.TYPE, "status");
-        runner.setProperty(PutElasticsearch.ID_ATTRIBUTE, "tweet_id");
+        runner.setProperty(InsertPropertyDescriptors.TYPE, "status");
+        runner.setProperty(InsertPropertyDescriptors.ID_ATTRIBUTE, "tweet_id");
         runner.assertValid();
 
 

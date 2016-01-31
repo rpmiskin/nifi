@@ -30,7 +30,9 @@ language governing permissions and limitations under the License. -->
 
     <modules>
         <module>nifi-elasticsearch-nar</module>
+        <module>nifi-elasticsearch-common</module>
         <module>nifi-elasticsearch-processors</module>
+        <module>nifi-elasticsearch-reporting-tasks</module>
     </modules>
 
     <dependencyManagement>
@@ -38,6 +40,11 @@ language governing permissions and limitations under the License. -->
             <dependency>
                 <groupId>org.apache.nifi</groupId>
                 <artifactId>nifi-elasticsearch-processors</artifactId>
+                <version>0.4.2-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.nifi</groupId>
+                <artifactId>nifi-elasticsearch-reporting-tasks</artifactId>
                 <version>0.4.2-SNAPSHOT</version>
             </dependency>
         </dependencies>

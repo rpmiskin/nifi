@@ -23,6 +23,7 @@ import org.apache.nifi.annotation.behavior.WritesAttributes;
 import org.apache.nifi.annotation.documentation.CapabilityDescription;
 import org.apache.nifi.annotation.documentation.Tags;
 import org.apache.nifi.components.PropertyDescriptor;
+import org.apache.nifi.elasticsearch.common.CommonPropertyDescriptors;
 import org.apache.nifi.flowfile.FlowFile;
 import org.apache.nifi.logging.ProcessorLog;
 import org.apache.nifi.processor.ProcessContext;
@@ -110,13 +111,7 @@ public class FetchElasticsearch extends AbstractElasticsearchProcessor {
 
     @Override
     public final List<PropertyDescriptor> getSupportedPropertyDescriptors() {
-        final List<PropertyDescriptor> descriptors = new ArrayList<>();
-        descriptors.add(CLUSTER_NAME);
-        descriptors.add(HOSTS);
-        descriptors.add(PROP_SSL_CONTEXT_SERVICE);
-        descriptors.add(PROP_SHIELD_LOCATION);
-        descriptors.add(PING_TIMEOUT);
-        descriptors.add(SAMPLER_INTERVAL);
+        final List<PropertyDescriptor> descriptors = new ArrayList<>(CommonPropertyDescriptors.getProperties());
         descriptors.add(DOC_ID_ATTRIBUTE);
         descriptors.add(INDEX);
         descriptors.add(TYPE);
